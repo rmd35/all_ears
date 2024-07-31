@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 import models, schemas
-from external_api import fetch_search_results, fetch_track_details
 
 # Song CRUD Operations
 def get_songs(db: Session, skip: int = 0, limit: int = 100):
@@ -33,8 +32,6 @@ def delete_song(db: Session, song_id: int):
         db.commit()
         return db_song
     return None
-
-# Similar CRUD functions for Rating, Review, Tag, and SongTag
 
 # Rating CRUD Operations
 def get_ratings(db: Session, skip: int = 0, limit: int = 100):
@@ -98,36 +95,4 @@ def delete_review(db: Session, review_id: int):
         db.delete(db_review)
         db.commit()
         return db_review
-    return None
-
-# Tag CRUD Operations
-def get_tags(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Tag).offset(skip).limit(limit).all()
-
-def get_tag(db: Session, tag_id: int):
-    return db.query(models.Tag).filter(models.Tag.id == tag_id).first()
-
-def create_tag(db: Session, tag: schemas.TagCreate):
-    db_tag = models.Tag(**tag.dict())
-    db.add(db_tag)
-    db.commit()
-    db.refresh(db_tag)
-    return db_tag
-
-def update_tag(db: Session, tag_id: int, tag: schemas.TagCreate):
-    db_tag = get_tag(db, tag_id)
-    if db_tag:
-        for key, value in tag.dict().items():
-            setattr(db_tag, key, value)
-        db.commit()
-        db.refresh(db_tag)
-        return db_tag
-    return None
-
-def delete_tag(db: Session, tag_id: int):
-    db_tag = get_tag(db, tag_id)
-    if db_tag:
-        db.delete(db_tag)
-        db.commit()
-        return db_tag
     return None

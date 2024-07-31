@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import Optional
 
 # Song Models
 class SongBase(BaseModel):
@@ -8,7 +8,7 @@ class SongBase(BaseModel):
     album: Optional[str] = Field(None, max_length=100)
     genre: Optional[str] = Field(None, max_length=50)
     mood_tags: Optional[str] = Field(None, max_length=100)
-    release_date: Optional[str] = Field(None, regex=r'^\d{4}-\d{2}-\d{2}$')  # ISO format
+    release_date: Optional[str] = Field(None, regex=r'^\d{4}-\d{2}-\d{2}$')
     duration: Optional[int] = Field(None, gt=0)
     album_art_url: Optional[str] = Field(None, max_length=200)
 
@@ -44,33 +44,6 @@ class ReviewCreate(ReviewBase):
     pass
 
 class Review(ReviewBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
-# Tag Models
-class TagBase(BaseModel):
-    name: str = Field(..., max_length=50)
-
-class TagCreate(TagBase):
-    pass
-
-class Tag(TagBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
-# SongTag Models
-class SongTagBase(BaseModel):
-    song_id: int
-    tag_id: int
-
-class SongTagCreate(SongTagBase):
-    pass
-
-class SongTag(SongTagBase):
     id: int
 
     class Config:

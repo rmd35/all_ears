@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Date, Text
 
@@ -19,7 +19,6 @@ class Song(Base):
 
     ratings = relationship("Rating", back_populates="song")
     reviews = relationship("Review", back_populates="song")
-    song_tags = relationship("SongTag", back_populates="song")
 
 class Rating(Base):
     __tablename__ = "ratings"
@@ -38,21 +37,3 @@ class Review(Base):
     review = Column(Text)
 
     song = relationship("Song", back_populates="reviews")
-
-class Tag(Base):
-    __tablename__ = "tags"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True, unique=True)
-
-    song_tags = relationship("SongTag", back_populates="tag")
-
-class SongTag(Base):
-    __tablename__ = "song_tags"
-
-    id = Column(Integer, primary_key=True, index=True)
-    song_id = Column(Integer, ForeignKey("songs.id"))
-    tag_id = Column(Integer, ForeignKey("tags.id"))
-
-    song = relationship("Song", back_populates="song_tags")
-    tag = relationship("Tag", back_populates="song_tags")
