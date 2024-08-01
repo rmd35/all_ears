@@ -11,7 +11,7 @@ class ReviewCreate(BaseModel):
     review: str
 
 def get_db_connection():
-    conn = sqlite3.connect('reviews.db')  # Ensure the database path is correct
+    conn = sqlite3.connect('reviews.db') 
     return conn
 
 @app.post("/reviews/")
